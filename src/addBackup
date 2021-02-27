@@ -1,0 +1,97 @@
+import sun.applet.Main;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class AddNewEntry extends JFrame {
+    public JPanel addPanel;
+    public static String[] addTypeName={"Crop","Fertilizer","Seed","Warehouse"};
+
+    private JTextField IDField;
+    private JTextPane IDPane;
+    private JTextPane namePane;
+    private JTextField NameField;
+    private JTextPane Opt1Pane;
+    private JTextField Opt1Field;
+    private JTextPane Opt2Pane;
+    private JTextField Opt2Field;
+    //public JComboBox<String> addType=new JComboBox<String>(addTypeName);
+    public JComboBox<String> addType;
+
+    public static int selectType;
+
+    public static JFrame frame;
+
+    public void AddNewEntry(){
+
+        //initializeList();
+
+        //addType.setSelectedIndex(3);
+        addType=new JComboBox<>(addTypeName);
+
+
+
+        addType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Looking for source");
+                    if(e.getSource()==addType){
+                        System.out.println("Found source");
+                    JComboBox<String> cb=(JComboBox<String>)e.getSource();
+                    //addType=(JComboBox) e.getSource();
+                    String msg=(String)cb.getSelectedItem();
+                    switch (msg){
+                        case "Crop":
+                            selectType=1;
+                            Opt1Pane.setText("Enter Quantity:");
+                            Opt2Pane.setText("");
+                            break;
+                        case "Fertilizer":
+                            selectType=2;
+                            Opt1Pane.setText("Enter Quantity:");
+                            Opt2Pane.setText("");
+                            break;
+                        case "Seed":
+                            selectType=3;
+                            Opt1Pane.setText("Enter Quantity:");
+                            Opt2Pane.setText("Enter Rate");
+                            break;
+                        case "Warehouse":
+                            selectType=4;
+                            Opt1Pane.setText("Enter Capacity:");
+                            Opt2Pane.setText("");
+                            break;
+                    }
+                }
+            }
+        });
+        add(addType);
+        frame.revalidate();
+    }
+
+    public void insertInto(){
+        try {
+            String ID, name, opt1, opt2;
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/agrisql", "user", "pass");
+            //Connection connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/agrisql",userName,password);
+            Statement createS = connection.createStatement();
+            //createS.executeQuery("insert into <> VALUES ("+ID+",\""+name+"\")");
+        }catch (Exception ie){}
+
+    }
+
+    public void initializeList(){
+        for(int i=0;i<5;i++){
+            addType.addItem(addTypeName[i]);
+        }
+    }
+
+
+}
